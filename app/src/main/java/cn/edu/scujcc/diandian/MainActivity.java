@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         this.channelRv = findViewById(R.id.channel_rv);
-        rvAdapter = new ChannelRvAdapter(this);
+        rvAdapter = new ChannelRvAdapter(this,this);
         this.channelRv.setAdapter(rvAdapter);
         this.channelRv.setLayoutManager(new LinearLayoutManager(this));
         initData();
