@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="ture">
+    <domain includeSubdomains="ture">ivi.bupt.edu.cn</domain>
+        <domain includeSubdomains="ture">47.112.240.160</domain>
+    </domain-config>
+</network-security-config>
