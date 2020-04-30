@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         //跳转到新界面，使用意图Intent
         Intent intent = new Intent(MainActivity.this,PlayerActivity.class);
         //传递用户选中的频道到下一个界面
-        intent.putExtra("Channel",c);
+        intent.putExtra("channel",c);
         startActivity(intent);
     }
     private void initData() {

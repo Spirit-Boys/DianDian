@@ -13,7 +13,6 @@ public class Channel implements Serializable {
     private String quality;
     private String cover;
     private String url; //频道播放地址
-    private List<Comment> comments;
 
     public String getId() {
         return id;
@@ -55,13 +54,6 @@ public class Channel implements Serializable {
         this.url = url;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 
     @Override
     public String toString() {
@@ -71,7 +63,6 @@ public class Channel implements Serializable {
                 ", quality='" + quality + '\'' +
                 ", cover='" + cover + '\'' +
                 ", url='" + url + '\'' +
-                ", comments=" + comments +
                 '}';
     }
 }

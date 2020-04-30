@@ -21,6 +21,15 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  * 使用了单例模式保证这个类仅有一个对象
  */
 public class ChannelLab {
+    //用常量代替硬编码内容
+    private final static String TAG = "DianDian";
+
+    public final static int MSG_HOT_COMMENTS = 2;
+
+    public final static int MSG_ADD_COMMENTS = 3;
+
+    public final static int MSG_NET_FAILURE = 4;
+
     private static ChannelLab INSTANCE = null;
 
     private List<Channel> data = new ArrayList<>();
@@ -100,21 +109,27 @@ public class ChannelLab {
                                    Response<List<Channel>> response) {
                 //如果网络访问成功
                 if(null != response && null != response.body()){
-                    Log.d("DianDian", "从阿里云得到的数据是：");
-                    Log.d("DianDian", response.body().toString());
+                    Log.d(TAG, "从阿里云得到的数据是：");
+                    Log.d(TAG, response.body().toString());
                     //不能在此操作Recyclerview刷新界面，只能使用线程通讯将数据传送到主线程
                     Message msg = new Message();
                     msg.obj = response.body();
                     handler.sendMessage(msg);
                 } else {
-                    Log.w("DianDian","respomse没有数据！");
+                    Log.w(TAG,"respomse没有数据！");
+                    Message msg = new Message();
+                    msg.what = MSG_NET_FAILURE;
+                    handler.sendMessage(msg);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Channel>> call, Throwable t) {
                 //如果网络访问失败
-                Log.d("DianDian","访问网络出错了",t);
+                Log.d(TAG,"访问网络出错了",t);
+                Message msg = new Message();
+                msg.what = MSG_NET_FAILURE;
+                handler.sendMessage(msg);
             }
         });
     }
@@ -122,30 +137,57 @@ public class ChannelLab {
     /**
      *访问网络得到一个频道的信息
      */
-    public void getChannelData(String id,Handler handler){
+    public void getHotComments(String channelId,Handler handler){
         //通过Retrofit访问服务器得到当前频道信息
         //调用单列
         Retrofit retrofit = RetrofitClient.getInstance();
         ChannelApi api = retrofit.create(ChannelApi.class);
-        Call<Channel> call = api.getChannel(id);
+        Call<List<Comment>> call = api.getHotComments(channelId);
+        call.enqueue(new Callback<List<Comment>>() {
+        @Override
+        public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+            Log.d(TAG, "服务器返回的热门评论是：");
+            Log.d(TAG, response.body().toString());
+                //发出通知
+                Message msg = new Message();
+                msg.what = MSG_HOT_COMMENTS; //自己规定2代表从阿里云获取单个频道
+                msg.obj = response.body();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+                Log.e(TAG, "访问网络失败！", t);
+                Message msg = new Message();
+                msg.what = MSG_NET_FAILURE;
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    /**
+     * 添加评论
+     */
+    public void addComent(String channelId,Comment comment, Handler handler){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        ChannelApi api = retrofit.create(ChannelApi.class);
+        Call<Channel> call = api.addComent(channelId,comment);
         call.enqueue(new Callback<Channel>() {
             @Override
             public void onResponse(Call<Channel> call, Response<Channel> response) {
-                //假设网络访问成功，把数据传递给主线程
-                Log.d("DianDian", "从阿里云得到的数据是：");
-                Log.d("DianDian", response.body().toString());
-                Channel channel = response.body();
-                //发出通知
+                Log.d(TAG, "添加评论后服务器返回的数据是：");
+                Log.d(TAG, response.body().toString());
                 Message msg = new Message();
-                msg.what = 2; //自己规定2代表从阿里云获取单个频道
-                msg.obj = channel;
+                msg.what = MSG_ADD_COMMENTS;
                 handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(Call<Channel> call, Throwable t) {
-                //假设网络访问失败，一个打印详细信息以解决
-                Log.d("DianDian","访问网络出错了",t);
+                Log.d(TAG,"访问网络出错了",t);
+                Message msg = new Message();
+                msg.what = MSG_NET_FAILURE;
+                handler.sendMessage(msg);
             }
         });
     }
