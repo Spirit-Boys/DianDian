@@ -83,7 +83,7 @@
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/c1_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -93,23 +93,23 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/c1_dt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="2020-04-08"
                     android:textColor="#C8C8C8"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+                    app:layout_constraintStart_toStartOf="@+id/c1_author"
+                    app:layout_constraintTop_toBottomOf="@+id/c1_author" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/c1_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="生命不息，战斗不止！"
-                    app:layout_constraintStart_toStartOf="@+id/textView2"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintStart_toStartOf="@+id/c1_dt"
+                    app:layout_constraintTop_toBottomOf="@+id/c1_dt" />
 
                 <ImageView
                     android:id="@+id/imageView3"

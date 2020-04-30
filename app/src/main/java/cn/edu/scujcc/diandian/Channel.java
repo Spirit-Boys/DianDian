@@ -8,26 +8,19 @@ import java.util.Objects;
  * 频道模型对象
  */
 public class Channel implements Serializable {
+    private String id;
     private String title;
     private String quality;
     private String cover;
     private String url; //频道播放地址
-    private List comments;
+    private List<Comment> comments;
 
-    public List getComments() {
-        return comments;
+    public String getId() {
+        return id;
     }
 
-    public void setComments(List comments) {
-        this.comments = comments;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -54,27 +47,29 @@ public class Channel implements Serializable {
         this.cover = cover;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Channel channel = (Channel) o;
-        return cover == channel.cover &&
-                Objects.equals(title, channel.title) &&
-                Objects.equals(quality, channel.quality);
+    public String getUrl() {
+        return url;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, quality, cover);
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override
     public String toString() {
         return "Channel{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", quality='" + quality + '\'' +
-                ", cover=" + cover +
+                ", cover='" + cover + '\'' +
                 ", url='" + url + '\'' +
                 ", comments=" + comments +
                 '}';

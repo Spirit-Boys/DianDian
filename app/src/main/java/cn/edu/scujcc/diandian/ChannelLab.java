@@ -90,7 +90,7 @@ public class ChannelLab {
      * 访问网络得到真实数据，代替以前的test()方法
      */
     public void getData(Handler handler){
-        Retrofit retrofit = RetrofitClient.getClient();
+        Retrofit retrofit = RetrofitClient.getInstance();
         ChannelApi api = retrofit.create(ChannelApi.class);
         Call<List<Channel>> call = api.getAllChannels();
         //enqueue把代码放在子线程去运行
@@ -114,6 +114,37 @@ public class ChannelLab {
             @Override
             public void onFailure(Call<List<Channel>> call, Throwable t) {
                 //如果网络访问失败
+                Log.d("DianDian","访问网络出错了",t);
+            }
+        });
+    }
+
+    /**
+     *访问网络得到一个频道的信息
+     */
+    public void getChannelData(String id,Handler handler){
+        //通过Retrofit访问服务器得到当前频道信息
+        //调用单列
+        Retrofit retrofit = RetrofitClient.getInstance();
+        ChannelApi api = retrofit.create(ChannelApi.class);
+        Call<Channel> call = api.getChannel(id);
+        call.enqueue(new Callback<Channel>() {
+            @Override
+            public void onResponse(Call<Channel> call, Response<Channel> response) {
+                //假设网络访问成功，把数据传递给主线程
+                Log.d("DianDian", "从阿里云得到的数据是：");
+                Log.d("DianDian", response.body().toString());
+                Channel channel = response.body();
+                //发出通知
+                Message msg = new Message();
+                msg.what = 2; //自己规定2代表从阿里云获取单个频道
+                msg.obj = channel;
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailure(Call<Channel> call, Throwable t) {
+                //假设网络访问失败，一个打印详细信息以解决
                 Log.d("DianDian","访问网络出错了",t);
             }
         });

@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DianDian.iml" filepath="$PROJECT_DIR$/DianDian.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Projects-DianDian.iml" filepath="$PROJECT_DIR$/Projects-DianDian.iml" group="DianDian" />
+      <module fileurl="file://$PROJECT_DIR$/DianDian.iml" filepath="$PROJECT_DIR$/DianDian.iml" group="DianDian" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="DianDian/app" />
     </modules>
   </component>
