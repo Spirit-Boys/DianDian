@@ -1,10 +1,12 @@
 package cn.edu.scujcc.diandian;
 
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +45,7 @@ public class PlayerActivity extends AppCompatActivity {
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private List<Comment> hotComments;
     private ChannelLab lab = ChannelLab.getInstance();
+    private MyPreference prefs = MyPreference.getInstance();
     private final Handler handler = new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -58,7 +61,7 @@ public class PlayerActivity extends AppCompatActivity {
                            Toast.LENGTH_LONG)
                            .show();
                    break;
-               case ChannelLab.MSG_NET_FAILURE: //评论失败了，提示一下用户
+               case ChannelLab.MSG_FAILURE:  //评论失败了，提示一下用户
                    Toast.makeText(PlayerActivity.this,"评论失败！",
                            Toast.LENGTH_LONG)
                            .show();
@@ -88,6 +91,13 @@ public class PlayerActivity extends AppCompatActivity {
                 lab.addComent(currentChannel.getId(), c , handler);
             });;
         }
+        getUser();
+    }
+
+    private void getUser() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String u = prefs.getString("name","未登录");
+        Log.d("DianDian","当前登录用户是"+u);
     }
 
     @Override
@@ -155,6 +165,9 @@ public class PlayerActivity extends AppCompatActivity {
         tvQuality = findViewById(R.id.tv_quality);
         tvName.setText(currentChannel.getTitle());
         tvQuality.setText(currentChannel.getQuality());
+        //读取当前用户名并显示
+        TextView currentUser = findViewById(R.id.current_user);
+        currentUser.setText(prefs.currentUser());
 
         if (hotComments != null && hotComments.size() > 0) {
             Comment c1 = hotComments.get(0);
