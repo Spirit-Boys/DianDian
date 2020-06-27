@@ -16,8 +16,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-    implements ChannelRvAdapter.ChannelClickListener {
+public class MainActivity extends AppCompatActivity implements ChannelRvAdapter.ChannelClickListener {
     private RecyclerView channelRv;
     private ChannelRvAdapter rvAdapter;
     private ChannelLab lab = ChannelLab.getInstance();
